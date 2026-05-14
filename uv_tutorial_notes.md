@@ -31,6 +31,7 @@
 - run `uv sync` to install modules
 
 ## Run
+- don't need to activate the .venv 
 - uv run python3 `main.py`
 - uv run `main.py`
 

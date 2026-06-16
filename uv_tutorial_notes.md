@@ -13,6 +13,11 @@
 - uv init --lib `my_library_folder`
 - cd my_project uv init `sub_project` -> creates a sub_project structure child of parent folder 
 
+### Init Git Clone UV Project
+- install uv (if not already installed)
+- cd to cloned project folder
+- uv sync
+
 ## Install python modules
 - uv add module1 module2 modulen
     * creates .venv
@@ -56,6 +61,4 @@
 # UV to production
 https://www.youtube.com/watch?v=45bAPTZW16o&t=69s
 ## UV Publish -> AG do research
-- see Youtube 
-
-
+- see Youtube

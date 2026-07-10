@@ -18,6 +18,52 @@
 - cd to cloned project folder
 - uv sync
 
+### Troubleshoot UV sync python 3.13 to 3.14
+#### option 1
+The cryptography package includes native C-extensions. On Python 3.14, you may be missing the required system build tools, or the lockfile might be tied to pre-compiled binaries from Python 3.13.
+
+To fix this, you can instruct uv to use pre-built wheels (if available) or force a clean re-installation:
+1. Delete the .venv directory and cache: Clean out the old environment and lock cache to avoid cached version conflicts.
+
+```bash
+rm -rf .venv
+uv cache clean
+```
+
+2. Force-reinstall and compile: Re-sync your project and force uv to resolve the dependencies strictly for your Python 3.14 environment.
+```bash
+uv sync --force-reinstall --no-cache
+```
+Alternatively, you can install Python 3.13 on your second device using uv to ensure perfect environment parity:
+```bash
+uv python install 3.13
+uv sync --python 3.13
+```
+#### option 2 missing RUST/OpenSSL tools to compile
+Para solucionar este error, debes sincronizar las versiones de Python entre ambos dispositivos o forzar la compilación local. El fallo ocurre porque cryptography v49.0.0 es un paquete compilado (contiene extensiones binarias en Rust/C). Al pasar a Python 3.14, PyPI aún no dispone de "wheels" precompiladas para esta versión tan reciente, lo que obliga a uv a intentar compilar el código fuente en tu máquina. Si tu segundo dispositivo carece de las herramientas de compilación necesarias (como el compilador de Rust o las librerías de desarrollo de OpenSSL), el proceso fallará irremediablemente.A continuación se presentan las mejores alternativas para corregir el problema de forma definitiva.
+
+##### alternativa 1 forzar python 3.13
+1. Eliminar .venv
+  rm -rf .venv
+2. forzar python 3.13
+  uv python pin 3.13
+3. Volver a Sync las dependencias
+  uv sync
+
+##### alternativa 2 instalar librerias de compilacion
+1. Linux:
+  ```bash
+  sudo apt update
+  sudo apt install build-essential libssl-dev libffi-dev python3-dev pkg-config curl
+  curl --proto '=https' --tlsv1.2 -sSf https://rustup.rs | sh
+```
+
+2. macOs:
+  ```bash
+  xcode-select --install
+  curl --proto '=https' --tlsv1.2 -sSf https://rustup.rs | sh
+  ```
+  
 ## Install python modules
 - uv add module1 module2 modulen
     * creates .venv
